@@ -1,5 +1,5 @@
 import {shaderMaterial ,useTexture ,useGLTF, OrbitControls } from '@react-three/drei'
-import { useFrame ,extend } from '@react-three/fiber'
+import { useFrame ,extend, useThree } from '@react-three/fiber'
 import { useRef } from 'react'
 import * as THREE from 'three'
 import { Perf } from 'r3f-perf'
@@ -27,7 +27,7 @@ extend({PlanMaterial})
 
 const GlitchMaterial = shaderMaterial(
     {
-        uTime : 0
+        
     },
     glitchVertexShader,
     glitchFragmentShader
@@ -38,32 +38,30 @@ extend({GlitchMaterial})
 export default function Experience()
 {
     const {nodes} = useGLTF('./model/portal.glb')
-
-    console.log(nodes.Cube027)
-    
-
     const planMaterial = useRef()
     const glitchMaterial = useRef()
+    const {camera} = useThree()
 
     useFrame((state, delta) => 
     {
 
         planMaterial.current.uTime += delta
-        glitchMaterial.current.uTime +=delta
         
-
     })
 
     const backedTexture = useTexture('./model/baked.jpg')
     backedTexture.flipY = false
 
+    camera.position.set(11.48, 3.31, 1.98);
+    camera.lookAt(0, 0.5, 0)
+    
     return <>
 
         <Perf />
 
         <color args={['#030202']} attach="background"/>
 
-        <OrbitControls makeDefault />
+        {/*<OrbitControls makeDefault />*/}
 
         
         <mesh geometry={nodes.Cube013.geometry} position={nodes.Cube013.position}>
