@@ -10,6 +10,7 @@ import glitchVertexShader from './shaders/glitch/vertex.glsl'
 import glitchFragmentShader from './shaders/glitch/fragment.glsl'
 
 
+
 const PlanMaterial = shaderMaterial(
     {
         uBigWavesSpeed : 0.4,
@@ -41,18 +42,21 @@ export default function Experience()
     const planMaterial = useRef()
     const glitchMaterial = useRef()
     const {camera} = useThree()
-
+    const cameraPosition = camera.position.set(11.48, 3.31, 1.98);
     useFrame((state, delta) => 
     {
 
         planMaterial.current.uTime += delta
         
     })
-
+    const changeCameraPosition = (newPosition) =>{
+                cameraPosition.set(newPosition[0],newPosition[1],newPosition[2])
+                console.log(cameraPosition)
+            }
     const backedTexture = useTexture('./model/baked.jpg')
     backedTexture.flipY = false
 
-    camera.position.set(11.48, 3.31, 1.98);
+    
     camera.lookAt(0, 0.5, 0)
     
     return <>
@@ -68,7 +72,7 @@ export default function Experience()
             <meshBasicMaterial map={ backedTexture }/>
             <Home/>
         </mesh>
-        <mesh
+        <mesh 
             geometry={nodes.Cube002.geometry}
             position={nodes.Cube002.position}
         />
@@ -77,6 +81,7 @@ export default function Experience()
             position={nodes.Cube014.position}
         />
         <mesh
+            onClick={() => changeCameraPosition([11.48, 2, 1.98])}
             geometry={nodes.Cube015.geometry}
             position={nodes.Cube015.position}
         />
